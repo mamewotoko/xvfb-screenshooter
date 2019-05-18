@@ -22,9 +22,10 @@ SC=0
 
 # please change this :)
 # todo: $1
-CMD="./bin/helloworld.py"
+CMD="$*"
 
-CMD_BIN=$(basename "$CMD" )
+#CMD_BIN=$(basename "$CMD" )
+CMD_BIN=$(echo $CMD | awk '{print $1}' | xargs basename)
 
 AUTH_ERR_LOG="./error.log"
 VIDEO_OUTFILE="${CMD_BIN}.ogv"
@@ -53,16 +54,17 @@ function make_screenshot(){
     fi
     SC=$((SC + 1))
     echo "[*] Making Screenshot $SC"
-    (xwd -display :$DISPLAY_NUM -root -out "${TMP}${IMG}" >/dev/null && 
-        convert "${TMP}${IMG}" "${OUTPUT_DIR}/${SC}_${IMAGE_OUTFILE}") || true
+    (xwd -display :$DISPLAY_NUM -root -out "${TMP}.xwd" >/dev/null && 
+        convert "${TMP}.xwd" "${OUTPUT_DIR}/${SC}_${IMAGE_OUTFILE}") || true
 }
 
 echo "[*] Starting xvfb-run"
-(xvfb-run --error-file $AUTH_ERR_LOG -f "$HOME/.Xauthority" --server-args="-screen ${SCREEN} ${DISPLAY_SIZE}x${DEPTH}" "${CMD}" >/dev/null) & disown
+(xvfb-run --error-file $AUTH_ERR_LOG --server-args=":${DISPLAY_NUM} -auth /tmp/xvfb.auth -ac -screen ${SCREEN} ${DISPLAY_SIZE}x${DEPTH}" ${CMD} >/dev/null) & disown
 cmdpid=$!
 
 echo "[*] Recording"
-(avconv -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
+#(avconv -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
+(ffmpeg -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
 recpid=$!
 
 while true; do
