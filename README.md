@@ -22,3 +22,8 @@ apt install -y imagemagick ffmpeg x11-apps
 ```
 ./xvfb-screenshooter.sh CMD
 ```
+
+## config
+
+* DISPLAY_SIZE=<width>x<height>
+  * display size, specify as environment variable

@@ -6,7 +6,10 @@ set -e
 
 # do not change this
 DISPLAY_BAK=$DISPLAY
-DISPLAY_SIZE=1600x900
+if [ -z "$DIPLAY_SIZE" ]; then
+    # HD
+    DISPLAY_SIZE=1280x720
+fi
 DEPTH=24
 
 LIMIT=0
