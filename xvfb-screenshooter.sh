@@ -73,7 +73,7 @@ echo "[*] Starting xvfb-run"
 cmdpid=$!
 
 echo "[*] Recording"
-(ffmpeg -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -pix_fmt yuv420p -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
+(ffmpeg -v quiet -codec:a aac -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -pix_fmt yuv420p -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
 recpid=$!
 
 while true; do
