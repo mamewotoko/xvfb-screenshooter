@@ -19,7 +19,8 @@ if [ -z "$DIPLAY_SIZE" ]; then
     DISPLAY_SIZE=1280x720
 fi
 AUDIO_OPTION="-codec:a aac"
-QUICKTIME_OPTION="-pix_fmt yuv420p"
+#QUICKTIME_OPTION="-pix_fmt yuv420p"
+QUICKTIME_OPTION=
 DEPTH=24
 
 LIMIT=0
