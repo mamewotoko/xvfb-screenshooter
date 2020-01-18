@@ -38,7 +38,7 @@ CMD="$*"
 CMD_BIN=$(echo $CMD | awk '{print $1}' | xargs basename)
 
 AUTH_ERR_LOG="./error.log"
-VIDEO_OUTFILE="${CMD_BIN}.mp4"
+VIDEO_OUTFILE="${CMD_BIN}.ogv"
 IMAGE_OUTFILE="${CMD_BIN}.png"
 TMP="/tmp/${RANDOM}"
 
@@ -73,7 +73,7 @@ echo "[*] Starting xvfb-run"
 cmdpid=$!
 
 echo "[*] Recording"
-(ffmpeg -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
+(ffmpeg -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -pix_fmt yuv420p -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
 recpid=$!
 
 while true; do
