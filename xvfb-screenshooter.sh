@@ -44,7 +44,6 @@ VIDEO_OUTFILE="${CMD_BIN}.mp4"
 IMAGE_OUTFILE="${CMD_BIN}.png"
 TMP="/tmp/${RANDOM}"
 
-
 if [ ! -d $OUTPUT_DIR ]; then
     mkdir $OUTPUT_DIR
 fi
@@ -75,7 +74,7 @@ echo "[*] Starting xvfb-run"
 cmdpid=$!
 
 echo "[*] Recording"
-(ffmpeg -v quiet $AUDIO_OPTION $QUICKTIME_OPTION -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
+(ffmpeg -v quiet $AUDIO_OPTION $QUICKTIME_OPTION -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &> $OUTPUT_DIR/movie_log.txt) & disown
 recpid=$!
 
 while true; do
