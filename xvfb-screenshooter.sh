@@ -28,18 +28,17 @@ TEST=0
 DISPLAY_NUM=99
 SCREEN=0
 
+# TODO command arg
 OUTPUT_DIR="./output"
 SC=0
 
-# please change this :)
-# todo: $1
 CMD="$*"
 
 #CMD_BIN=$(basename "$CMD" )
 CMD_BIN=$(echo $CMD | awk '{print $1}' | xargs basename)
 
 AUTH_ERR_LOG="./error.log"
-VIDEO_OUTFILE="${CMD_BIN}.ogv"
+VIDEO_OUTFILE="${CMD_BIN}.mp4"
 IMAGE_OUTFILE="${CMD_BIN}.png"
 TMP="/tmp/${RANDOM}"
 
@@ -74,7 +73,6 @@ echo "[*] Starting xvfb-run"
 cmdpid=$!
 
 echo "[*] Recording"
-#(avconv -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
 (ffmpeg -v quiet -codec:a libvorbis -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
 recpid=$!
 
@@ -104,6 +102,4 @@ done
 (killall Xvfb 2>/dev/null || true)
 
 echo "[*] Finished cleanly"
-exit 0
-
 exit 0
