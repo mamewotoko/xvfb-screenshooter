@@ -18,6 +18,8 @@ if [ -z "$DIPLAY_SIZE" ]; then
     # HD
     DISPLAY_SIZE=1280x720
 fi
+AUDIO_OPTION="-codec:a aac"
+QUICKTIME_OPTION="-pix_fmt yuv420p"
 DEPTH=24
 
 LIMIT=0
@@ -38,7 +40,7 @@ CMD="$*"
 CMD_BIN=$(echo $CMD | awk '{print $1}' | xargs basename)
 
 AUTH_ERR_LOG="./error.log"
-VIDEO_OUTFILE="${CMD_BIN}.ogv"
+VIDEO_OUTFILE="${CMD_BIN}.mp4"
 IMAGE_OUTFILE="${CMD_BIN}.png"
 TMP="/tmp/${RANDOM}"
 
@@ -73,7 +75,7 @@ echo "[*] Starting xvfb-run"
 cmdpid=$!
 
 echo "[*] Recording"
-(ffmpeg -v quiet -codec:a aac -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -pix_fmt yuv420p -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
+(ffmpeg -v quiet $AUDIO_OPTION $QUICKTIME_OPTION -f x11grab -s $DISPLAY_SIZE -i :$DISPLAY_NUM -y "$OUTPUT_DIR/$VIDEO_OUTFILE" &>/dev/null) & disown
 recpid=$!
 
 while true; do
